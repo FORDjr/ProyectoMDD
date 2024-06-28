@@ -27,7 +27,7 @@ export async function login(req, res) {
         if (!matchPassword) {
             return res.status(400).json({
                 message: "La contraseña es incorrecta"
-            });
+            })
         }
 
         req.session.user = {
