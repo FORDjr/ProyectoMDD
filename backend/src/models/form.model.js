@@ -1,3 +1,4 @@
+// Se importa el módulo de 'mongoose'
 import mongoose from 'mongoose';
 
 const formSchema = new mongoose.Schema({
