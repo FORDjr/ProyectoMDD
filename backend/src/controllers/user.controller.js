@@ -34,9 +34,11 @@ export async function getUser(req, res) {
     }
 }
 
+
+
 export async function getUsers(req, res) {
     try {
-        const users = await User.find().populate('roles', 'name');
+        const users = await User.find().populate('roles', 'name');//se obtienen todos los usuarios
         res.status(200).json({
             message: "Lista de usuarios",
             data: users
@@ -47,10 +49,12 @@ export async function getUsers(req, res) {
     }
 }
 
+
+
 export async function updateUser(req, res) {
     try {
-        const rutUser = req.query.rut;
-        const updatedData = req.body;
+        const rutUser = req.query.rut;//se obtiene el rut del usuario
+        const updatedData = req.body;//se obtienen los datos a actualizar
 
         if (!rutUser) {
             res.status(400).json({
