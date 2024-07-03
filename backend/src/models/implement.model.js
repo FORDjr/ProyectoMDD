@@ -1,15 +1,8 @@
-
-"use strict";
 // Se importa el módulo de 'mongoose'
 import mongoose from 'mongoose';
 
 
 const implementSchema = new mongoose.Schema({
-    id:{//id del implemento!UUID
-        type: String,
-        required: true,
-        unique: true
-    },
     name: {//nombre del implemento
         type: String,
         required: true
@@ -33,9 +26,10 @@ const implementSchema = new mongoose.Schema({
         enum: ['futbol', 'basquetbol', 'tenis' ]//!agregar mas categorias
     }
 },
+
 {
-        versionKey: false,
-        timestamps: {
+        versionKey: false,//se agrega la versionKey
+        timestamps: {//se agrega la fecha de creacion y actualizacion
         createdAt: 'createdAt',
         updateAt: 'updateAt'
         },
