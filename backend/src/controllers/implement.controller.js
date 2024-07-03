@@ -79,7 +79,7 @@ export async function getImplementByname(req, res) {
 
 export async function updateImplement(req, res) {
     try {
-      const idImplement = req.query.id;//se obtiene el id del implemento
+      const idImplement = req.params.id;//se obtiene el id del implemento
       const updatedData = req.body;//se obtienen los datos a actualizar
 
       if (!idImplement) {
@@ -90,7 +90,7 @@ export async function updateImplement(req, res) {
         return;
       }
 
-      const implement = await Implement.findOneAndUpdate({id: idImplement}, updatedData, {new: true});//se actualiza el implemento
+      const implement = await Implement.findByIdAndUpdate(idImplement, updatedData, {new: true});//se actualiza el implemento
 
       if(!implement){
         res.status(404).json({
