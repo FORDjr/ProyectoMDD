@@ -33,7 +33,7 @@ const formSchema = new mongoose.Schema({
         },
     
 })
-
+//Esta funcion es para que el usuario pueda ver su peticion
 export default mongoose.model('Form', formSchema);
 
 /*REQUERIMIENTO FUNCIONAL
