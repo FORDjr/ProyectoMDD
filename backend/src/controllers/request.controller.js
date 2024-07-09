@@ -1,5 +1,4 @@
 import Request from "../models/request.model.js";
-import Implement from "../models/implement.model.js";
 
 export async function createRequest(req, res) {
   try {
@@ -45,7 +44,7 @@ export async function getRequest(req, res) {
   }
 }
 
-export async function getForms(req, res) {
+export async function getRequestAll(req, res) {
   try {
      const requests = await Request.find();
      res.status(200).json({
