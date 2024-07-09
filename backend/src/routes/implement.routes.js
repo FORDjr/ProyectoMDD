@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { createImplement, getImplementByname, getImplements, deleteImplement, updateImplement } from "../controllers/implement.controller.js";
-import { isAdmin, isManager } from "../middlewares/auth.middleware.js";
+import { isAdmin, authorizeRoles } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/create", [isAdmin, isManager], createImplement);//http://localhost:3000/api/implement/create
+router.post("/create",authorizeRoles , createImplement);//http://localhost:3000/api/implement/create
 
 router.get("/", getImplements);//http://localhost:3000/api/implement/
 
