@@ -2,6 +2,7 @@
 import { Router } from "express";
 import { createRequest, getRequest, getRequestAll, updateRequest, deleteRequest, acceptRequestController } from "../controllers/request.controller.js";
 import { authorizeRoles } from "../middlewares/auth.middleware.js";
+import { isManager } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -15,15 +16,13 @@ router.get("/req-all", getRequestAll); //api/request/req-all
 router.get("/get/:id", getRequest);
 
 // Ruta para modificar peticion
-router.put("/modify/:id", authorizeRoles, updateRequest);
+router.put("/modify/:id", authorizeRoles("administrador", "encargado"), updateRequest);
 
 // Ruta para eliminar peticion
-router.delete("/delete/:id", deleteRequest);
+router.delete("/delete/:id", authorizeRoles("administrador", "encargado"), deleteRequest);
 
 //Ruta para aceptar peticiones
-router.put("/:id/accept", authorizeRoles, acceptRequestController);
+router.put("/:id/accept", authorizeRoles("administrador", "encargado"), acceptRequestController);
 
-//Actualizar la peticion
-router.get("/:id", )
 
 export default router;

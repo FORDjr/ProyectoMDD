@@ -30,7 +30,7 @@ const implementSchema = new mongoose.Schema({
     category: {//categoria del implemento por ejemplo: futbol, basquetbol, tenis
         type: String,
         required: true,
-        enum: ['futbol', 'basquetbol', 'tenis' ]//!agregar mas categorias
+        enum: ['futbol', 'basquetbol', 'tenis', 'otros' ]//!agregar mas categorias
     }
 }, 
 {

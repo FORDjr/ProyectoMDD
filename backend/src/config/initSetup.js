@@ -18,8 +18,7 @@ export async function createRoles() {
     if (count > 0) return;
 
     await Promise.all([
-      new Role({ name: "usuario" }).save(),
-      new Role({ name: "administrador" }).save(),
+      new Role({ name: "entrenador" }).save(),
     ]);
     console.log("* => Roles creados exitosamente");
   } catch (error) {

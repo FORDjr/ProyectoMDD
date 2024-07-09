@@ -1,3 +1,4 @@
+import { request } from "express";
 import Request from "../models/request.model.js";
 
 export async function createRequest(req, res) {

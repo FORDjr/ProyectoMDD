@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import Implement from './implement.model.js'; // Asegúrate de importar el modelo de implementos
 
 const requestSchema = new mongoose.Schema({
-    userId: [{
-        type: mongoose.Schema.Types.ObjectId,
+    userRut: [{
+        type: String,
         required: true,
         ref: 'user'
     }],
@@ -30,7 +30,7 @@ const requestSchema = new mongoose.Schema({
     },
     expiresAt: {
         type: Date,
-        default: () => new Date(Date.now() + 1 * 30 * 1000) // Fecha de expiración
+        default: () => new Date(Date.now() + 60 * 1000) // Fecha de expiración
     }
 },
 {
@@ -58,7 +58,7 @@ requestSchema.pre('save', async function(next) {
         next(error);
     }
 });
-
+// Función para devolver el stockWaiting al stock si la solicitud expira
 requestSchema.post('save', function(req, next) {
     const now = new Date();
     if (req.expiresAt == now && req.status == 'Pendiente') {
@@ -78,6 +78,31 @@ requestSchema.post('save', function(req, next) {
         next();
     }
 });
+
+// Función para verificar solicitudes expiradas
+const checkExpiredRequests = async () => {
+    const now = new Date();
+    try {
+        const expiredRequests = await Request.find({ status: 'Pendiente', expiresAt: { $lt: now } });
+        for (let req of expiredRequests) {
+            req.status = 'Expirado';
+            await req.save();
+            for (let item of req.implementsRequested) {
+                const implement = await Implement.findById(item.implementId);
+                if (implement) {
+                    implement.stockWaiting -= item.quantity;
+                    implement.stock += item.quantity;
+                    await implement.save();
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error verificando solicitudes expiradas: ", error);
+    }
+}
+
+// Verificar cada minuto
+setInterval(checkExpiredRequests, 10 * 1000);
 
 const Request = mongoose.model('Request', requestSchema);
 export default Request;
