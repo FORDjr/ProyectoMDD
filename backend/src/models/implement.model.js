@@ -1,7 +1,6 @@
 // Se importa el módulo de 'mongoose'
 import mongoose from 'mongoose';
 
-
 const implementSchema = new mongoose.Schema({
     name: {//nombre del implemento
         type: String,
@@ -13,7 +12,15 @@ const implementSchema = new mongoose.Schema({
     },
     stock: {//cantidad de implementos
         type: Number,
-        required: true
+        required: true //5
+    },
+    stockWaiting: {//cantidad de implementos esperando (10 minutos)
+        type: Number,
+        required: true // 3
+    },
+    stockAccepted: {//cantidad de implementos entregados
+        type: Number,
+        required: true // 2
     },
     status: {//estado del implemento
         type: String,
@@ -25,8 +32,7 @@ const implementSchema = new mongoose.Schema({
         required: true,
         enum: ['futbol', 'basquetbol', 'tenis' ]//!agregar mas categorias
     }
-},
-
+}, 
 {
         versionKey: false,//se agrega la versionKey
         timestamps: {//se agrega la fecha de creacion y actualizacion
@@ -37,5 +43,10 @@ const implementSchema = new mongoose.Schema({
 
 });
 
+const Implement = mongoose.model('Implement', implementSchema);
+export default Implement;
 
-export default mongoose.model('Implement', implementSchema);
+//historial de lo que pide un usuario
+//quien soy
+//el implemento
+//pregunto si se encuentran disponible con el findone y si el contador el mayor a 0 restarle un y prestar la pelota
