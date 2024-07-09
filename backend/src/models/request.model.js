@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Implement from './implement.model.js'; // Asegúrate de importar el modelo de implementos
+import Implement from './implement.model.js';
 
 const requestSchema = new mongoose.Schema({
     userId: [{
@@ -25,12 +25,12 @@ const requestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pendiente', 'Aceptado', 'Expirado'],
+        enum: ['Pendiente', 'Aceptado', 'Expirado', 'Cancelado'],
         default: 'Pendiente'
     },
     expiresAt: {
         type: Date,
-        default: () => new Date(Date.now() + 1 * 30 * 1000) // Fecha de expiración
+        default: () => new Date(Date.now() + 1 * 30 * 1000)
     }
 },
 {
@@ -49,7 +49,7 @@ requestSchema.pre('save', async function(next) {
                 throw new Error(`El implemento ${implement.name} no está disponible o no tiene suficiente stock.`);
             } else {
                 implement.stock -= item.quantity;
-                implement.stockWaiting += item.quantity; // Incrementa stockWaiting
+                implement.stockWaiting += item.quantity;
                 await implement.save();
             }
         }
@@ -68,7 +68,7 @@ requestSchema.post('save', function(req, next) {
                 const implement = await Implement.findById(item.implementId);
                 if (implement) {
                     implement.stockWaiting -= item.quantity;
-                    implement.stock += item.quantity; // Devuelve la cantidad al stock
+                    implement.stock += item.quantity;
                     await implement.save();
                 }
             }

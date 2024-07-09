@@ -1,5 +1,4 @@
 import Request from "../models/request.model.js";
-import Implement from "../models/implement.model.js";
 
 export async function createRequest(req, res) {
   try {
@@ -45,7 +44,7 @@ export async function getRequest(req, res) {
   }
 }
 
-export async function getForms(req, res) {
+export async function getRequestAll(req, res) {
   try {
      const requests = await Request.find();
      res.status(200).json({
@@ -55,7 +54,7 @@ export async function getForms(req, res) {
 
    } catch (error) {
      res.status(500).json({
-         message: "Error al encontrar los formularios",
+         message: "Error al encontrar los peticiones",
          error: error.message
      });
    }
@@ -139,3 +138,46 @@ export const acceptRequest = async (requestId) => {
 
   return request;
 };
+
+export async function cancelRequest(req, res) {
+  try {
+    const id = req.params.id;
+    const userId = req.user.id; // ID del usuario autenticado
+    const request = await Request.findById(id);
+    
+    if (!request) {
+      return res.status(404).json({
+        message: `Petición con id ${id} no encontrada`,
+        data: null
+      });
+    }
+
+    if (request.userId.toString() !== userId.toString()) {
+      return res.status(403).json({
+        message: "No tienes permiso para cancelar esta petición",
+        data: null
+      });
+    }
+
+    if (request.status !== 'Pendiente') {
+      return res.status(400).json({
+        message: "Solo se pueden cancelar peticiones pendientes",
+        data: null
+      });
+    }
+
+    request.status = 'Cancelado';
+    await request.save();
+
+    res.status(200).json({
+      message: "Petición cancelada exitosamente",
+      data: request
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al cancelar la petición",
+      error: error.message
+    });
+  }
+}

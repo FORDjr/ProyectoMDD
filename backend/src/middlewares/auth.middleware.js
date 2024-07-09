@@ -4,6 +4,8 @@
  * @param {Object} res - Objeto de respuesta
  * @param {Function} next - Función para continuar con la siguiente función de middleware
  */
+
+
 async function isAdmin(req, res, next) {
   try {
     // Verifica si hay un usuario autenticado en la sesión
