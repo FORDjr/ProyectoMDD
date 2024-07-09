@@ -1,21 +1,11 @@
 
 import Implement from "../models/implement.model.js";//se importa el modelo de implementos
 
-
-
 export async function createImplement(req, res) {
     try{
-      const { name, description, stock, status, category } = req.body;//se obtienen los datos del implemento
-      
-      const newImplement = new Implement({//se crea un nuevo implemento
-        name,
-        description,
-        stock,
-        status,
-        category,
-      });
-
-      await newImplement.save();//se guarda el implemento
+      const implementData = req.body;
+      const newImplement = new Implement(implementData);
+      await newImplement.save(); //se guarda el implemento
 
       res.status(201).json({
           message: "Implemento creado exitosamente",
@@ -65,7 +55,7 @@ export async function getImplementByname(req, res) {
       }
 
       res.status(200).json({
-        message: "Implemento  encontrado!",
+        message: "Implemento encontrado!",
         data: implement
       
       })
@@ -77,9 +67,10 @@ export async function getImplementByname(req, res) {
 }
 
 
+
 export async function updateImplement(req, res) {
     try {
-      const idImplement = req.params.id;//se obtiene el id del implemento
+      const idImplement = req.body.id;//se obtiene el id del implemento
       const updatedData = req.body;//se obtienen los datos a actualizar
 
       if (!idImplement) {
@@ -108,6 +99,7 @@ export async function updateImplement(req, res) {
       console.log("Error en implement.controller.js -> updateImplement(): ", error);
       res.status(500).json({message: error.message});
     }
+
 }
 
 

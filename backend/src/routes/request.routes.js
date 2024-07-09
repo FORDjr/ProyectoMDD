@@ -1,7 +1,7 @@
-//El usuario puede ver disponibilidad, crear una peticion de implemento, eliminar una peticion de implemento 
-//y puede editar su peticion de implemento utilizando sus credenciales de alumno
+// request.routes.js
 import { Router } from "express";
-import { createRequest, getRequest, updateRequest, deleteRequest } from "../controllers/request.controller.js";
+import { createRequest, getRequest, getForms, updateRequest, deleteRequest, acceptRequestController } from "../controllers/request.controller.js";
+import { isAdmin, isManager } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -11,10 +11,20 @@ router.post("/", createRequest);
 // Ruta para obtener peticion
 router.get("/:id", getRequest);
 
+// Ruta para obtener todas las peticiones
+router.get("/req-all-manager", (isManager), getForms);
+router.get("/req-all-admin", (isAdmin), getForms);
+
 // Ruta para modificar peticion
-router.put("/:id", updateRequest);
+router.put("/:id", [isAdmin, isManager], updateRequest);
 
 // Ruta para eliminar peticion
 router.delete("/:id", deleteRequest);
+
+//Ruta para aceptar peticiones
+router.put("/:id/accept", [isAdmin, isManager], acceptRequestController);
+
+//Actualizar la peticion
+router.get("/:id", )
 
 export default router;

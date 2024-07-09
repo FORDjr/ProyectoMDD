@@ -1,6 +1,5 @@
-//El usuario puede ver disponibilidad, crear una peticion de implemento, eliminar una peticion de implemento 
-//y puede editar su peticion de implemento utilizando sus credenciales de alumno
-import request from "../models/request.model.js";
+import Request from "../models/request.model.js";
+import Implement from "../models/implement.model.js";
 
 export async function createRequest(req, res) {
   try {
@@ -9,13 +8,13 @@ export async function createRequest(req, res) {
     await newRequest.save();
 
     res.status(201).json({
-        message: "peticion creada exitosamente",
+        message: "Petición creada exitosamente",
         data: newRequest
-    })
+    });
 
   } catch (error) {
     res.status(500).json({
-        message: "Error al crear la peticion",
+        message: "Error al crear la petición",
         error: error.message
     });
   }
@@ -24,50 +23,65 @@ export async function createRequest(req, res) {
 export async function getRequest(req, res) {
  try {
     const id = req.params.id;
-
-    const Request = await Request.findById(id);
+    const request = await Request.findById(id);
     
-    if (!Request) {
+    if (!request) {
         return res.status(404).json({
-            message: `peticion con id ${id} no encontrado`,
+            message: `Petición con id ${id} no encontrada`,
             data: null
         });
     }
 
     res.status(200).json({
-        message: "peticion encontrada exitosamente",
-        data: Request
-    })
+        message: "Petición encontrada exitosamente",
+        data: request
+    });
 
   } catch (error) {
     res.status(500).json({
-        message: "Error al encontrar el peticion",
+        message: "Error al encontrar la petición",
         error: error.message
     });
   }
 }
 
+export async function getForms(req, res) {
+  try {
+     const requests = await Request.find();
+     res.status(200).json({
+         message: "Lista de formularios",
+         data: requests
+     });
+
+   } catch (error) {
+     res.status(500).json({
+         message: "Error al encontrar los formularios",
+         error: error.message
+     });
+   }
+ }
+
 export async function updateRequest(req, res) {
   try {
     const id = req.params.id;
     const RequestData = req.body;
-    const RequestUpdated = await Request.findByIdAndUpdate(id, RequestData, {new: true});
+    const requestUpdated = await Request.findByIdAndUpdate(id, RequestData, { new: true });
 
-    if (!RequestUpdated) {
+    if (!requestUpdated) {
         return res.status(404).json({
-            message: `peticion con id ${id} no encontrado`,
+            message: `Petición con id ${id} no encontrada`,
             data: null
         });
     }
 
     res.status(200).json({
-        message: "peticion actualizada exitosamente",
-        data: RequestUpdated
-    })
+        message: "Petición actualizada exitosamente",
+        data: requestUpdated
+    });
 
   } catch (error) {
     res.status(500).json({
-        message: "Error al actualizar la peticion",
+        message: "Error al actualizar la petición",
         error: error.message
     });
   }
@@ -76,24 +90,52 @@ export async function updateRequest(req, res) {
 export async function deleteRequest(req, res) {
   try {
     const id = req.params.id;
-    const RequestDeleted = await Request.findByIdAndDelete(id);
+    const requestDeleted = await Request.findByIdAndDelete(id);
 
-    if (!RequestDeleted) {
+    if (!requestDeleted) {
         return res.status(404).json({
-            message: `peticion con id ${id} no encontrado`,
+            message: `Petición con id ${id} no encontrada`,
             data: null
         });
     }
 
     res.status(200).json({
-        message: "peticion eliminada exitosamente",
-        data: RequestDeleted
-    })
+        message: "Petición eliminada exitosamente",
+        data: requestDeleted
+    });
     
   } catch (error) {
     res.status(500).json({
-        message: "Error al eliminar la peticion",
+        message: "Error al eliminar la petición",
         error: error.message
-    });    
+    });
   }
 }
+
+export async function acceptRequestController(req, res) {
+  const { id } = req.params;
+
+  try {
+    const request = await acceptRequest(id);
+    res.status(200).json({ message: 'Petición aceptada', request });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+export const acceptRequest = async (requestId) => {
+  const request = await Request.findByIdAndUpdate(     
+      requestId,
+      {
+          expiresAt: null,
+          status: 'Aceptado'
+      },
+      { new: true }
+  );
+
+  if (!request) {
+      throw new Error('Petición no encontrada');
+  }
+
+  return request;
+};
