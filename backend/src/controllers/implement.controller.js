@@ -33,8 +33,8 @@ export async function getImplements(req, res) {
 
 export async function getImplementByname(req, res) {
     try {
-      const  nameImplement = req.query.name;//se obtiene el nombre del implemento
-
+      const  nameImplement = req.body.name;//se obtiene el nombre del implemento
+      console.log(nameImplement);
       if(!nameImplement) {
         res.status(400).json({
           message: "El parámetro 'name' es requerido.",
@@ -70,7 +70,7 @@ export async function getImplementByname(req, res) {
 
 export async function updateImplement(req, res) {
     try {
-      const idImplement = req.body.id;//se obtiene el id del implemento
+      const idImplement = req.params.id;//se obtiene el id del implemento
       const updatedData = req.body;//se obtienen los datos a actualizar
 
       if (!idImplement) {
