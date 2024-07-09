@@ -59,5 +59,51 @@ requestSchema.pre('save', async function(next) {
     }
 });
 
+// Función para devolver el stockWaiting al stock si la solicitud expira
+requestSchema.post('save', function(req, next) {
+    const now = new Date();
+    if (req.expiresAt == now && req.status == 'Pendiente') {
+        req.status = 'Expirado';
+        req.save().then(async () => {
+            for (let item of req.implementsRequested) {
+                const implement = await Implement.findById(item.implementId);
+                if (implement) {
+                    implement.stockWaiting -= item.quantity;
+                    implement.stock += item.quantity; // Devuelve la cantidad al stock
+                    await implement.save();
+                }
+            }
+            next();
+        }).catch(next);
+    } else {
+        next();
+    }
+});
+
+// Función para verificar solicitudes expiradas
+const checkExpiredRequests = async () => {
+    const now = new Date();
+    try {
+        const expiredRequests = await Request.find({ status: 'Pendiente', expiresAt: { $lt: now } });
+        for (let req of expiredRequests) {
+            req.status = 'Expirado';
+            await req.save();
+            for (let item of req.implementsRequested) {
+                const implement = await Implement.findById(item.implementId);
+                if (implement) {
+                    implement.stockWaiting -= item.quantity;
+                    implement.stock += item.quantity;
+                    await implement.save();
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error verificando solicitudes expiradas: ", error);
+    }
+}
+
+// Verificar cada minuto
+setInterval(checkExpiredRequests, 10 * 1000);
+
 const Request = mongoose.model('Request', requestSchema);
 export default Request;
