@@ -1,5 +1,6 @@
 import { request } from "express";
 import Request from "../models/request.model.js";
+import Implement from "../models/implement.model.js";
 
 export async function createRequest(req, res) {
   try {
@@ -112,30 +113,58 @@ export async function deleteRequest(req, res) {
   }
 }
 
+// Función para aceptar una solicitud
 export async function acceptRequestController(req, res) {
   const { id } = req.params;
 
   try {
-    const request = await acceptRequest(id);
+    const request = await checkAndAcceptRequest(id);
     res.status(200).json({ message: 'Petición aceptada', request });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 }
 
-export const acceptRequest = async (requestId) => {
-  const request = await Request.findByIdAndUpdate(     
-      requestId,
-      {
-          expiresAt: null,
-          status: 'Aceptado'
-      },
-      { new: true }
-  );
+// Función para verificar y aceptar la solicitud
+export const checkAndAcceptRequest = async (requestId) => {
+  const request = await Request.findById(requestId);
 
   if (!request) {
-      throw new Error('Petición no encontrada');
+    throw new Error('Petición no encontrada');
   }
 
-  return request;
+  const currentTime = new Date();
+  if (request.expiresAt && request.expiresAt < currentTime) {
+    for (let item of request.implementsRequested) {
+      const implement = await Implement.findById(item.implementId);
+      if (implement) {
+        implement.stockWaiting -= item.quantity;
+        implement.stock += item.quantity;
+        await implement.save();
+      }
+    }
+    request.status = 'Expirado';
+    await request.save();
+    throw new Error('El stock ha expirado');
+  }
+
+  for (let item of request.implementsRequested) {
+    const implement = await Implement.findById(item.implementId);
+    if (implement) {
+      implement.stockWaiting -= item.quantity;
+      implement.stockAccepted += item.quantity;
+      await implement.save();
+    }
+  }
+
+  const updatedRequest = await Request.findByIdAndUpdate(
+    requestId,
+    {
+      expiresAt: null,
+      status: 'Aceptado'
+    },
+    { new: true }
+  );
+
+  return updatedRequest;
 };
