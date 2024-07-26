@@ -1,6 +1,7 @@
 import { request } from "express";
 import Request from "../models/request.model.js";
 import Implement from "../models/implement.model.js";
+import { set } from "mongoose";
 
 export async function createRequest(req, res) {
   try {
@@ -133,21 +134,12 @@ export const checkAndAcceptRequest = async (requestId) => {
     throw new Error('Petición no encontrada');
   }
 
-  const currentTime = new Date();
-  if (request.expiresAt && request.expiresAt < currentTime) {
-    for (let item of request.implementsRequested) {
-      const implement = await Implement.findById(item.implementId);
-      if (implement) {
-        implement.stockWaiting -= item.quantity;
-        implement.stock += item.quantity;
-        await implement.save();
-      }
-    }
-    request.status = 'Expirado';
-    await request.save();
-    throw new Error('El stock ha expirado');
+  // Comprueba si la solicitud ha expirado, pero no maneja la lógica de expiración aquí
+  if (request.expiresAt && request.expiresAt < new Date()) {
+    throw new Error('La solicitud ha expirado y no puede ser procesada');
   }
 
+  // Procede con la aceptación si la solicitud no ha expirado
   for (let item of request.implementsRequested) {
     const implement = await Implement.findById(item.implementId);
     if (implement) {
@@ -168,3 +160,31 @@ export const checkAndAcceptRequest = async (requestId) => {
 
   return updatedRequest;
 };
+
+
+// Función para verificar si la solicitud ha expirado y actualizar el stock de los implementos solicitados
+export const checkRequestExpiration = async () => {
+  const requests = await Request.find({ status: 'Pendiente' });
+
+  for (let request of requests) {
+    const currentTime = new Date();
+    if (request.expiresAt && request.expiresAt < currentTime) {
+      // Procesa cada implemento solicitado en la solicitud expirada
+      for (let item of request.implementsRequested) {
+        const implement = await Implement.findById(item.implementId);
+        if (implement) {
+          // Ajusta el stock: devuelve el stock de espera al stock general
+          implement.stockWaiting -= item.quantity;
+          implement.stock += item.quantity;
+          await implement.save();
+        }
+      }
+      // Actualiza el estado de la solicitud a 'Expirado'
+      request.status = 'Expirado';
+      await request.save();
+    }
+  }
+};
+
+//Verificar cada minuto si hay solicitudes expiradas
+setInterval(checkRequestExpiration, 60000);
