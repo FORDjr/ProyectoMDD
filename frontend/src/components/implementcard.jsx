@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import dataimplementcard from "../data/dataimplementcard";
 const ImplementCard = () => {
@@ -32,3 +33,23 @@ const ImplementCard = () => {
 }
 
 export default ImplementCard;
+*/
+
+
+import React from 'react';
+import getImplements from '../services/implements.service.js';
+const ImplementCard = ({ data= {} }) => {
+  return (
+    <div className="implement-card">
+      <h1>1</h1>
+      <h1>2</h1>
+      <h1>3</h1>
+      <h1>{data.name}</h1>
+      <h1>{data._id}</h1>
+
+    </div>
+  );
+};
+
+export default ImplementCard;
+

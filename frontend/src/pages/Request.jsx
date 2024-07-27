@@ -8,7 +8,7 @@ const Request = () => {
   const [quantity, setQuantity] = useState(1); 
   const [message, setMessage] = useState('');
 
-  //* ///////////////////////////////////////////////////////////////// GPT NO ENTIENDO XD 
+  //* ///////////////////////////////////////////////////////////////// GPT xd 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

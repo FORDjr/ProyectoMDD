@@ -56,9 +56,8 @@ const Implement = () => {
 export default Implement;
 */
 
-
+/*
 import React from 'react';
-import axios from '../services/root.service'; 
 import Navbar from '../components/Navbar';
 import ImplementCard from '../components/implementcard'; 
 
@@ -73,3 +72,34 @@ return (
 };
 
 export default Implement;
+*/
+
+
+
+import { useState, useEffect } from 'react';
+import Navbar from '../components/Navbar';
+import ImplementCard from '../components/implementcard'; 
+import getImplements from '../services/implements.service.js';
+
+function App() {
+  const [implement, setImplement] = useState([]);
+
+  useEffect(() => {
+    const implementSubmit = async () => {
+      const dataImplement = await getImplements();
+      setImplement(dataImplement);
+    };
+    implementSubmit();
+  }, []);
+
+  return (
+    <div className="implement-container">
+      <Navbar />
+      <ImplementCard data={implement} />
+
+    </div>
+  );
+}
+
+export default App;
+
