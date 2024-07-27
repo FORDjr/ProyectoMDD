@@ -1,14 +1,35 @@
 import Request from "../models/request.model.js";
+import Implement from "../models/implement.model.js";
+
+const checkRequestExpiration = async () => {
+  const requests = await Request.find({ status: 'Pendiente' });
+  requests.map(async (request) => {
+    const currentTime = new Date();
+    if (request.expiresAt && request.expiresAt < currentTime) {
+        const implement = await Implement.findById(request.implementsRequested[0].implementId);
+        if (implement) {
+          console.log("Estoy aqui");
+          implement.stockWaiting -= request.implementsRequested[0].quantity;
+          implement.stock += request.implementsRequested[0].quantity;
+          const data = await implement.save();
+          console.log("Implemento guardado: ",data);
+        }
+        request.status = 'Expirado';
+        const data1 = await request.save();
+        console.log("Peticion expirada: ",data1);
+        return;
+    }
+  });
+};
 
 export async function createRequest(req, res) {
   try {
     const RequestData = req.body;
     const newRequest = new Request(RequestData);
     await newRequest.save();
-
     res.status(201).json({
-        message: "Petición creada exitosamente",
-        data: newRequest
+      message: "Petición creada exitosamente",
+      data: newRequest
     });
 
   } catch (error) {
@@ -18,9 +39,12 @@ export async function createRequest(req, res) {
     });
   }
 }
+setInterval(() => {
+  checkRequestExpiration();
+}, 1000)
 
 export async function getRequest(req, res) {
- try {
+  try {
     const id = req.params.id;
     const request = await Request.findById(id);
     
@@ -46,19 +70,19 @@ export async function getRequest(req, res) {
 
 export async function getRequestAll(req, res) {
   try {
-     const requests = await Request.find();
-     res.status(200).json({
-         message: "Lista de formularios",
-         data: requests
-     });
+    const requests = await Request.find();
+    res.status(200).json({
+        message: "Lista de formularios",
+        data: requests
+    });
 
-   } catch (error) {
-     res.status(500).json({
-         message: "Error al encontrar los formularios",
-         error: error.message
-     });
-   }
- }
+  } catch (error) {
+    res.status(500).json({
+        message: "Error al encontrar los formularios",
+        error: error.message
+    });
+  }
+}
 
 export async function updateRequest(req, res) {
   try {
@@ -111,30 +135,49 @@ export async function deleteRequest(req, res) {
   }
 }
 
+// Función para aceptar una solicitud
 export async function acceptRequestController(req, res) {
   const { id } = req.params;
 
   try {
-    const request = await acceptRequest(id);
+    const request = await checkAndAcceptRequest(id);
     res.status(200).json({ message: 'Petición aceptada', request });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 }
 
-export const acceptRequest = async (requestId) => {
-  const request = await Request.findByIdAndUpdate(     
-      requestId,
-      {
-          expiresAt: null,
-          status: 'Aceptado'
-      },
-      { new: true }
-  );
+// Función para verificar y aceptar la solicitud
+export const checkAndAcceptRequest = async (requestId) => {
+  const request = await Request.findById(requestId);
 
   if (!request) {
-      throw new Error('Petición no encontrada');
+    throw new Error('Petición no encontrada');
   }
 
-  return request;
+  // Comprueba si la solicitud ha expirado, pero no maneja la lógica de expiración aquí
+  if (request.expiresAt && request.expiresAt < new Date()) {
+    throw new Error('La solicitud ha expirado y no puede ser procesada');
+  }
+
+  // Procede con la aceptación si la solicitud no ha expirado
+  for (let item of request.implementsRequested) {
+    const implement = await Implement.findById(item.implementId);
+    if (implement) {
+      implement.stockWaiting -= item.quantity;
+      implement.stockAccepted += item.quantity;
+      await implement.save();
+    }
+  }
+
+  const updatedRequest = await Request.findByIdAndUpdate(
+    requestId,
+    {
+      expiresAt: null,
+      status: 'Aceptado'
+    },
+    { new: true }
+  );
+
+  return updatedRequest;
 };
