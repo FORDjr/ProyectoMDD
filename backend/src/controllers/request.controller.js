@@ -1,4 +1,3 @@
-import { request } from "express";
 import Request from "../models/request.model.js";
 
 export async function createRequest(req, res) {
@@ -14,7 +13,7 @@ export async function createRequest(req, res) {
 
   } catch (error) {
     res.status(500).json({
-        message: "Error al crear la petición",
+        message: "Error al crear la petición, no existe el implemento en la base de datos",
         error: error.message
     });
   }

@@ -138,6 +138,7 @@ body {
 	background-color: #003366;
 	height: 9vh;
 	overflow: hidden;
+	z-index: 999; /* Add this line to ensure the navbar is on top */
 	ul {
 		display: flex;
 		justify-content: space-between;
@@ -387,3 +388,187 @@ body {
 	width: 100%;
 	max-width: 500px;
   }
+
+
+
+
+
+
+
+
+  
+
+  .request-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10rem;
+	background-color: #f7f7f7;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .request-container h1 {
+	color: #003366;
+	margin-bottom: 1rem;
+  }
+  
+  .request-container form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 500px;
+  }
+  
+  .request-container label {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: #003366;
+	align-self: flex-start;
+  }
+  
+  .request-container input,
+  .request-container textarea {
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	border: 2px solid #003366;
+	border-radius: 0.5rem;
+	width: 100%;
+	font-size: 1rem;
+  }
+  
+  .request-container textarea.message-textarea {
+	height: 100px; 
+	resize: vertical;
+  }
+  
+  .request-container button {
+	padding: 0.5rem 1rem;
+	background-color: #003366;
+	color: #ffffff;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	font-size: 130%;
+	width: 150px;
+	height: 40px;
+  }
+  
+  .request-container button:hover {
+	background-color: #005bb5;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.implement-card {
+	width: 100%;
+	min-width: 100vh;
+	background: #ffffff;
+	display: grid;
+	grid-template-columns: repeat(3,1fr);
+	gap: 40px;
+	align-items: center;
+	padding: 100px 20px;
+}
+
+.implement-card .box {
+	background: #f7f7f7;
+	text-align: center;
+	padding: 20px;
+	border-radius: 10px;
+	transition: 0.3s ease-in-out;
+}
+
+.implement-card .box:hover {
+	box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+	transform: translateY(-10px);
+}
+
+.implement-card .card {
+	padding: 15px 15px 0;
+}
+
+.card .image {
+	width: 100%;
+	background: #dfdfdf;
+	margin: 10px auto 25px;
+	position: relative;
+}
+
+.card .image::before {
+	content: "";
+	position: absolute;
+	width: 10px;
+	bottom: 8px;
+	left: 10px;
+	border-radius: 50%;
+
+}
+
+.card .image img {
+	width: 100%;
+	transition: 0.3s ease-in-out;
+}
+
+.card .image:hover img{
+	transform: scale(1.1);
+}
+
+.card .description {
+	width: 80%;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.card .description h1 {
+	font-size: 30px;
+	font-weight: 600;
+	color: #333;
+	text-transform: uppercase;
+}
+
+.card .description p {
+	font-size: 20px;
+	color: #666;
+}
+
+.implement-container button {
+	padding: 0.5rem 1rem;
+	background-color: #003366;
+	color: #ffffff;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	font-size: 130%;
+	width: 150px;
+	height: 40px;
+  }
+
+
+
+.main-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100%;
+	padding-top: 9vh; /* Add this line to push the content below the navbar */
+}
