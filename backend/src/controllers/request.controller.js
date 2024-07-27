@@ -1,29 +1,50 @@
-import { request } from "express";
 import Request from "../models/request.model.js";
 import Implement from "../models/implement.model.js";
-import { set } from "mongoose";
+
+const checkRequestExpiration = async () => {
+  const requests = await Request.find({ status: 'Pendiente' });
+  requests.map(async (request) => {
+    const currentTime = new Date();
+    if (request.expiresAt && request.expiresAt < currentTime) {
+        const implement = await Implement.findById(request.implementsRequested[0].implementId);
+        if (implement) {
+          console.log("Estoy aqui");
+          implement.stockWaiting -= request.implementsRequested[0].quantity;
+          implement.stock += request.implementsRequested[0].quantity;
+          const data = await implement.save();
+          console.log("Implemento guardado: ",data);
+        }
+        request.status = 'Expirado';
+        const data1 = await request.save();
+        console.log("Peticion expirada: ",data1);
+        return;
+    }
+  });
+};
 
 export async function createRequest(req, res) {
   try {
     const RequestData = req.body;
     const newRequest = new Request(RequestData);
     await newRequest.save();
-
     res.status(201).json({
-        message: "Petición creada exitosamente",
-        data: newRequest
+      message: "Petición creada exitosamente",
+      data: newRequest
     });
 
   } catch (error) {
     res.status(500).json({
-        message: "Error al crear la petición",
-        error: error.message
+      message: "Error al crear la petición",
+      error: error.message
     });
   }
 }
+setInterval(() => {
+  checkRequestExpiration();
+}, 1000)
 
 export async function getRequest(req, res) {
- try {
+  try {
     const id = req.params.id;
     const request = await Request.findById(id);
     
@@ -49,19 +70,19 @@ export async function getRequest(req, res) {
 
 export async function getRequestAll(req, res) {
   try {
-     const requests = await Request.find();
-     res.status(200).json({
-         message: "Lista de formularios",
-         data: requests
-     });
+    const requests = await Request.find();
+    res.status(200).json({
+        message: "Lista de formularios",
+        data: requests
+    });
 
-   } catch (error) {
-     res.status(500).json({
-         message: "Error al encontrar los formularios",
-         error: error.message
-     });
-   }
- }
+  } catch (error) {
+    res.status(500).json({
+        message: "Error al encontrar los formularios",
+        error: error.message
+    });
+  }
+}
 
 export async function updateRequest(req, res) {
   try {
@@ -160,31 +181,3 @@ export const checkAndAcceptRequest = async (requestId) => {
 
   return updatedRequest;
 };
-
-
-// Función para verificar si la solicitud ha expirado y actualizar el stock de los implementos solicitados
-export const checkRequestExpiration = async () => {
-  const requests = await Request.find({ status: 'Pendiente' });
-
-  for (let request of requests) {
-    const currentTime = new Date();
-    if (request.expiresAt && request.expiresAt < currentTime) {
-      // Procesa cada implemento solicitado en la solicitud expirada
-      for (let item of request.implementsRequested) {
-        const implement = await Implement.findById(item.implementId);
-        if (implement) {
-          // Ajusta el stock: devuelve el stock de espera al stock general
-          implement.stockWaiting -= item.quantity;
-          implement.stock += item.quantity;
-          await implement.save();
-        }
-      }
-      // Actualiza el estado de la solicitud a 'Expirado'
-      request.status = 'Expirado';
-      await request.save();
-    }
-  }
-};
-
-//Verificar cada minuto si hay solicitudes expiradas
-setInterval(checkRequestExpiration, 60000);
