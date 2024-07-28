@@ -1,7 +1,8 @@
 import deleteIcon from '../assets/deleteIcon.svg';
 import updateIcon from '../assets/updateIcon.svg';
+import acceptIcon from '../assets/acceptIcon.svg';
 
-const Table = ({ columns, data, onDelete, onEdit }) => {
+const Table = ({ columns, data, onDelete, onEdit, onAccept}) => {
   const totalRows = 7;
   const numEmptyRows = totalRows - (data.length > 0 ? data.length : 1);
 
@@ -28,18 +29,30 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                 <td key={col}>
                   {col === 'Acción' ? (
                     <>
-                      <img 
-                      src={updateIcon} 
-                      alt="Editar" 
-                      style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
-                      onClick={() => onEdit(row.Rut)}
-                      />
-                      <img 
+                      {onEdit &&  
+                        <img 
+                        src={updateIcon} 
+                        alt="Editar" 
+                        style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
+                        onClick={() => onEdit(row.Rut)}
+                        />
+                      }
+                      {onDelete &&
+                        <img 
                         src={deleteIcon} 
                         alt="Eliminar" 
-                        style={{ cursor: 'pointer', width: '24px', height: '24px' }} 
+                        style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }} 
                         onClick={() => onDelete(row.Rut)} 
-                      />
+                        />
+                      }
+                      {onAccept && 
+                        <img 
+                          src={acceptIcon} 
+                          alt="Aceptar" 
+                          style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }} 
+                          onClick={() => onAccept(row._id)} 
+                        /> 
+                      }
                     </>
                   ) : (
                     row[col]

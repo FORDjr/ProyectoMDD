@@ -299,6 +299,16 @@ body {
     cursor: pointer;
 }
 
+/*si Estado es Aceptado cambiar a color verde*/
+.accepted-cell {
+	color: green;
+	text-align: center;
+	padding: 8px 10px;
+	border-radius: 4px;
+}
+
+
+
 .table-container {
     display: flex;
     flex-direction: column;

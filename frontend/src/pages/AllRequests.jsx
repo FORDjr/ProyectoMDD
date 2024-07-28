@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Table from '../components/Table';
-import { getRequestAll } from '../services/request.service';
+import { getRequestAll, acceptRequest } from '../services/request.service';
 
 const AllRequests = () => {
   const [requests, setRequest] = useState([]);
 
-  const columns = ['Nombre', 'Rut', 'Implemento', 'Cantidad', 'Estado', 'Mensaje', 'Hora de expiración'];
+  const columns = ['Nombre', 'Rut', 'Implemento', 'Cantidad', 'Estado', 'Mensaje', 'Hora de expiración', 'Acción'];
 
   const dataRequest = async () => {
     try {
       const response = await getRequestAll();
       
       const formattedData = response.data.map(request => ({
+        _id: request._id,
         Nombre: request.username,
         Rut: request.userRut,
         Implemento: request.implementsRequested[0].implementName,
@@ -27,6 +28,14 @@ const AllRequests = () => {
     }
   };
 
+  const handleAccept = async (data) => {
+    try {
+      await acceptRequest(data);
+      dataRequest();
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  }
   useEffect(() => {
     dataRequest();
   }, []);
@@ -38,7 +47,10 @@ const AllRequests = () => {
       <Navbar />
       <div className='main-container'>
       <div className='table-container'>
-          <Table columns={columns} data={filteredRequests}/>
+          <Table columns={columns} 
+          data={filteredRequests} 
+          onAccept={handleAccept} 
+          />
         </div>
       </div>
     </>

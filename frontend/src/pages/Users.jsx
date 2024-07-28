@@ -71,7 +71,9 @@ const Users = () => {
               />
             </div>
           </div>
-          <Table columns={columns} data={filteredUsers} onDelete={handleDelete} onEdit={handleEdit} />
+          <Table columns={columns} data={filteredUsers} 
+          onDelete={handleDelete} 
+          onEdit={handleEdit} />
         </div>
       </div>
     </>
