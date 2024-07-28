@@ -6,7 +6,7 @@ import { getRequestAll } from '../services/request.service';
 const AllRequests = () => {
   const [requests, setRequest] = useState([]);
 
-  const columns = ['Nombre', 'Rut', 'Implemento', 'Cantidad', 'Estado', 'Hora de expiración'];
+  const columns = ['Nombre', 'Rut', 'Implemento', 'Cantidad', 'Estado', 'Mensaje', 'Hora de expiración'];
 
   const dataRequest = async () => {
     try {
@@ -18,6 +18,7 @@ const AllRequests = () => {
         Implemento: request.implementsRequested[0].implementName,
         Cantidad: request.implementsRequested[0].quantity,
         Estado: request.status,
+        Mensaje: request.message,
         'Hora de expiración': request.expiresAt?.split('T')[1]
       }));
       setRequest(formattedData);
