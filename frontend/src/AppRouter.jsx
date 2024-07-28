@@ -12,6 +12,7 @@ import AllRequests from './pages/AllRequests';
 import Implement from './pages/Implement';
 import React from 'react';
 import ImplementCard from './components/implementcard';
+import EditRequest from './pages/EditRequest';
 
 const AppRouter = () => {
   return (
@@ -44,7 +45,7 @@ const AppRouter = () => {
         } 
       />
       <Route 
-        path="/edit-user/:rut" 
+        path="/edit-user/:id" 
         element={
           <ProtectedRoute>
             <EditUser />
@@ -68,6 +69,14 @@ const AppRouter = () => {
             <AllRequests />
           </ProtectedRoute>
         }
+      />
+      <Route 
+        path="/edit-request/:id" 
+        element={
+          <ProtectedRoute>
+            <EditRequest />
+          </ProtectedRoute>
+        } 
       />
 
       <Route 

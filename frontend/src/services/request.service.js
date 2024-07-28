@@ -8,3 +8,21 @@ export async function getRequestAll() {
         throw error.response?.data || error.message;
     }
 }
+
+export async function UpdateRequest(data, id) {
+    try {
+        const response = await axios.put(`/request/modify/${id}`, data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
+export async function deleteRequest(id) {
+    try {
+        const { data } = await axios.delete(`/request/delete/${id}`);
+        return data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}

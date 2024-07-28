@@ -9,15 +9,10 @@ const checkRequestExpiration = async () => {
     if (request.expiresAt && request.expiresAt < currentTime) {
         const implement = await Implement.findById(request.implementsRequested[0].implementId);
         if (implement) {
-          console.log("Estoy aqui");
           implement.stockWaiting -= request.implementsRequested[0].quantity;
           implement.stock += request.implementsRequested[0].quantity;
-          const data = await implement.save();
-          console.log("Implemento guardado: ",data);
         }
         request.status = 'Expirado';
-        const data1 = await request.save();
-        console.log("Peticion expirada: ",data1);
         return;
     }
   });
