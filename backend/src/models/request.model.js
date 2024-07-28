@@ -21,7 +21,7 @@ const requestSchema = new mongoose.Schema({
     }],
     message: {
         type: String,
-        required: true
+        required: false
     },
     status: {
         type: String,

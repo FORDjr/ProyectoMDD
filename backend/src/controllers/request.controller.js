@@ -84,6 +84,54 @@ export async function getRequestAll(req, res) {
   }
 }
 
+
+export async function getOwnRequests (req, res) {
+  try {
+    const rutUser = req.session.user.rut;
+    const requests = await Request.find({userRut:rutUser});
+    res.status(200).json({
+      message: "Lista de formularios",
+      data : requests
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al encontrar al Usuario",
+      error: error.message
+    })
+  }
+}
+
+export async function getRequestByRut (req, res) {
+  try {
+    const rut_a_buscar = req.body.userRut;
+    
+    if(rut_a_buscar){
+      console.log("rut: ",rut_a_buscar);
+      const requests2 = await Request.find({userRut:rut_a_buscar});
+      if(!requests2){
+        res.status(404).json({
+          message: `No se encontraron peticiones creadas por ${rut_a_buscar}`
+        })
+      }
+      res.status(200).json({
+        message: "Lista de formularios",
+        data : requests2
+      })
+      return;
+    }
+    res.status(400).json({
+      message: "No hay rut ingresado"
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al encontrar al Usuario",
+      error: error.message
+    })
+  }
+}
+
 export async function updateRequest(req, res) {
   try {
     const id = req.params.id;
