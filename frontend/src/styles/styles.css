@@ -138,6 +138,10 @@ body {
 	background-color: #003366;
 	height: 9vh;
 	overflow: hidden;
+	border-bottom: 3px solid #00172d;
+	background: rgb(2,0,36);
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 50%, rgba(72,0,187,1) 100%);
+	
 	z-index: 999; /* Add this line to ensure the navbar is on top */
 	ul {
 		display: flex;
@@ -516,7 +520,9 @@ body {
 }
 
 .implement-card .box:hover {
-	box-shadow: #003366 0px 48px 100px 0px;
+	box-shadow: rgba(42, 0, 110, 0.457) 0px 1px 50px 0px;
+	box-shadow: rgb(2,0,36);
+	box-shadow: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 50%, rgba(72,0,187,1) 100%);
 	transform: translateY(-10px);
 }
 
