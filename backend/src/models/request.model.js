@@ -2,16 +2,16 @@ import mongoose from 'mongoose';
 import Implement from './implement.model.js'; // Importar el modelo de implemento
 
 const requestSchema = new mongoose.Schema({
-    userRut: [{
+    userRut: {
         type: String,
         required: true,
-        ref: 'user'
-    }],
+        ref: 'User'
+    },
     implementsRequested: [{
         implementId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'implement'
+            ref: 'Implement'
         },
         quantity: {
             type: Number,

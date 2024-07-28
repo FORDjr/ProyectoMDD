@@ -8,6 +8,7 @@ import EditUser from './pages/EditUser';
 import ProtectedRoute from './components/ProtectedRoute';
 import Users from './pages/Users';
 import Request from './pages/Request';
+import AllRequests from './pages/AllRequests';
 import Implement from './pages/Implement';
 import React from 'react';
 import ImplementCard from './components/implementcard';
@@ -59,7 +60,16 @@ const AppRouter = () => {
           </ProtectedRoute>
         }
       />
-      
+
+      <Route
+        path="/req-all"
+        element={
+          <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
+            <AllRequests />
+          </ProtectedRoute>
+        }
+      />
+
       <Route 
         path="/implement" 
         element={

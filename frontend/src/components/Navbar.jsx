@@ -42,6 +42,11 @@ const Navbar = () => {
                 <li className={location.pathname === "/request" ? "active" : ""}>
                     <NavLink to="/request">Peticiones</NavLink>
                 </li>
+                {(userRole === 'administrador' || userRole === 'encargado') && (
+                    <li className={location.pathname === "/req-all" ? "active" : ""}>
+                    <NavLink to="/req-all">Todas las peticiones</NavLink>
+                    </li>
+                )}
 
                 <li className={location.pathname === "/perfil" ? "active" : ""}>
                     <NavLink to="/profile">Perfil</NavLink>

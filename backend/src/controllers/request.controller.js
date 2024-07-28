@@ -1,5 +1,6 @@
 import Request from "../models/request.model.js";
 import Implement from "../models/implement.model.js";
+import User from "../models/user.model.js";
 
 const checkRequestExpiration = async () => {
   const requests = await Request.find({ status: 'Pendiente' });
@@ -70,10 +71,38 @@ export async function getRequest(req, res) {
 
 export async function getRequestAll(req, res) {
   try {
-    const requests = await Request.find();
+    const requests = await Request.find().populate('implementsRequested.implementId', 'name');
+    const users = await User.find().populate('roles', 'name');
+
+    const userMap = {};
+    users.forEach(user => {
+      userMap[user.rut] = user.username;
+    });
+
+    const implementMap = {};
+    requests.forEach(request => {
+      request.implementsRequested.forEach(item => {
+        implementMap[item.implementId._id] = item.implementId.name;
+      });
+    });
+
+    const formattedRequests = requests.map(request => ({
+        _id: request._id,
+        userRut: request.userRut,
+        username: userMap[request.userRut],
+        implementsRequested: request.implementsRequested.map(item => ({
+            implementId: item.implementId._id,
+            quantity: item.quantity,
+            implementName: request.implementsRequested[0].implementId.name
+        })),
+        message: request.message,
+        status: request.status,
+        expiresAt: request.expiresAt
+    }));
+
     res.status(200).json({
         message: "Lista de formularios",
-        data: requests
+        data: formattedRequests
     });
 
   } catch (error) {
