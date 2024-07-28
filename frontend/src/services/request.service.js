@@ -9,6 +9,15 @@ export async function getRequestAll() {
     }
 }
 
+export async function acceptRequest(data) {
+    try {
+        const response = await axios.put(`/request/${data}/accept`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
 export async function UpdateRequest(data, id) {
     try {
         const response = await axios.put(`/request/modify/${id}`, data);
@@ -16,6 +25,7 @@ export async function UpdateRequest(data, id) {
     } catch (error) {
         throw error.response?.data || error.message;
     }
+
 }
 
 export async function deleteRequest(id) {
@@ -25,4 +35,5 @@ export async function deleteRequest(id) {
     } catch (error) {
         throw error.response?.data || error.message;
     }
+
 }
