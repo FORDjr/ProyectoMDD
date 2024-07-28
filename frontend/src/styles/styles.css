@@ -444,50 +444,68 @@ body {
   }
   
   .request-container button {
-	padding: 0.5rem 1rem;
-	background-color: #003366;
-	color: #ffffff;
+	padding: auto;
+	display: flex;
+	justify-content: center;
+	padding: 1.2vh 0;
+	border-radius: 12px;
 	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	font-size: 130%;
-	width: 150px;
-	height: 40px;
+	width: 100%;
+	background-color: #003366;
+	color: #eef7ff;
+	font-weight: bold;
+	font-size: 16px;
+	border: 3px solid #003366;
+	margin-top: 10px;
   }
   
-  .request-container button:hover {
-	background-color: #005bb5;
+.request-container button:hover {
+	border: 3px solid #003366;
+	background-color: #eef7ff;
+	color: #003366;
+	transition: .3s ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  body, html {
+	margin: 0;
+	padding: 0;
+	width: 100%; 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.implement-card {
-	width: 100%;
-	min-width: 100vh;
-	background: #ffffff;
+  
+  .implement-card {
 	display: grid;
-	grid-template-columns: repeat(3,1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 40px;
 	align-items: center;
 	padding: 100px 20px;
-}
+	width: 100%; 
+	max-width: 100%; 
+	overflow: hidden;
+	box-sizing: border-box; 
+
+  }
+
 
 .implement-card .box {
 	background: #f7f7f7;
@@ -498,13 +516,10 @@ body {
 }
 
 .implement-card .box:hover {
-	box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+	box-shadow: #003366 0px 48px 100px 0px;
 	transform: translateY(-10px);
 }
 
-.implement-card .card {
-	padding: 15px 15px 0;
-}
 
 .card .image {
 	width: 100%;
@@ -539,7 +554,7 @@ body {
 }
 
 .card .description h1 {
-	font-size: 30px;
+	font-size: 28px;
 	font-weight: 600;
 	color: #333;
 	text-transform: uppercase;
@@ -550,25 +565,40 @@ body {
 	color: #666;
 }
 
-.implement-container button {
-	padding: 0.5rem 1rem;
-	background-color: #003366;
-	color: #ffffff;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	font-size: 130%;
-	width: 150px;
-	height: 40px;
+@media (max-width: 768px) {
+	.implement-card {
+	  grid-template-columns: repeat(2, 1fr); 
+	  padding: 50px 10px;
+	}
+  }
+  
+  @media (max-width: 480px) {
+	.implement-card {
+	  grid-template-columns: 1fr; 
+	  padding: 25px 5px;
+	}
   }
 
 
-
-.main-container {
+  .implement-container button {
+	padding: auto;
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 100vh;
+	padding: 1.2vh 0;
+	border-radius: 12px;
+	border: none;
 	width: 100%;
-	padding-top: 9vh; /* Add this line to push the content below the navbar */
+	background-color: #003366;
+	color: #eef7ff;
+	font-weight: bold;
+	font-size: 16px;
+	border: 3px solid #003366;
+	margin-top: 10px;
+  }
+  
+.implement-container button:hover {
+	border: 3px solid #003366;
+	background-color: #eef7ff;
+	color: #003366;
+	transition: .3s ease-out;
 }

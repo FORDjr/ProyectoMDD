@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
 import axios from '../services/root.service';
 import Navbar from "../components/Navbar";
+import { profile } from "../services/auth.service";
+import { useLocation } from 'react-router-dom';
 
 const Request = () => {
   const [rut, setRut] = useState('');
   const [implementId, setImplementId] = useState('');
   const [quantity, setQuantity] = useState(1); 
   const [message, setMessage] = useState('');
+  const location = useLocation();
 
-  //* ///////////////////////////////////////////////////////////////// GPT xd 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const peticion = await axios.post('/request', {
+      await axios.post('/request', {
         userRut: rut,
         implementsRequested: [
           {
@@ -27,18 +29,45 @@ const Request = () => {
       alert('Error al crear la petición: ' + error.message);
     }
   };
-  //* /////////////////////////////////////////////////////////////////
+
+  const [userProfile, setUserProfile] = useState({
+    username: '',
+    email: '',
+    rut: '',
+    rolName: ''
+  });
+
+  useEffect(() => {
+    async function dataProfile(){  
+      try {
+        const { data } = await profile();
+        setUserProfile(data);
+        setRut(data.rut); // Asegúrate de que el estado rut se actualiza con el valor de userProfile.rut
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    }
+    dataProfile();
+  }, []);
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const id = query.get('implementId');
+    if (id) {
+      setImplementId(id);
+    }
+  }, [location]);
+
   return (
-    
-      <div className="request-container">
+    <div className="request-container">
       <Navbar />
-      <h1>Formulario epico</h1>
+      <h1>Formulario épico</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="rut">RUT:</label>
         <input
           type="text"
           id="rut"
-          value={rut}
+          value={userProfile.rut} // Utiliza el estado rut en lugar de userProfile.rut
           onChange={(e) => setRut(e.target.value)}
           required
         />

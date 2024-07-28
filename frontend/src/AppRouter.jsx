@@ -9,6 +9,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Users from './pages/Users';
 import Request from './pages/Request';
 import Implement from './pages/Implement';
+import React from 'react';
+import ImplementCard from './components/implementcard';
 
 const AppRouter = () => {
   return (
@@ -67,6 +69,8 @@ const AppRouter = () => {
         }
       />
 
+      <Route path="/" element={<ImplementCard />} />
+      <Route path="/request" element={<Request />} />
 
       <Route path="*" element={<Error404 />} />
     </Routes>
