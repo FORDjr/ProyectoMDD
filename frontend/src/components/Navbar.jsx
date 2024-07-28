@@ -22,7 +22,7 @@ const Navbar = () => {
             <ul>
                 <li>
                     <img
-                        src="/cohete.png"
+                        src="/sports.png"
                         alt="Logo metodología de desarrollo"
                     />
                 </li>

@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Table from '../components/Table';
-import { getRequestAll, acceptRequest } from '../services/request.service';
+import { getRequestAll, deleteRequest, acceptRequest } from '../services/request.service';
+
 
 const AllRequests = () => {
   const [requests, setRequest] = useState([]);
-
+  const navigate = useNavigate();
+  
   const columns = ['Nombre', 'Rut', 'Implemento', 'Cantidad', 'Estado', 'Mensaje', 'Hora de expiración', 'Acción'];
 
   const dataRequest = async () => {
@@ -20,7 +23,7 @@ const AllRequests = () => {
         Cantidad: request.implementsRequested[0].quantity,
         Estado: request.status,
         Mensaje: request.message,
-        'Hora de expiración': request.expiresAt?.split('T')[1]
+        'Hora de expiración': request.expiresAt?.split('T')[1],
       }));
       setRequest(formattedData);
     } catch (error) {
@@ -40,6 +43,20 @@ const AllRequests = () => {
     dataRequest();
   }, []);
 
+  const handleDelete = async (id) => {
+    try{
+      await deleteRequest(id);
+      dataRequest();
+    }catch(error){
+      console.error("Error: ", error);
+    }
+  };
+
+  const handleEdit = async (id) => {
+    const request = requests.find(r => r._id === id);
+    navigate(`/edit-request/${id}`, { state: { request } });
+  }
+
   const filteredRequests = requests;
 
   return (
@@ -49,6 +66,8 @@ const AllRequests = () => {
       <div className='table-container'>
           <Table columns={columns} 
           data={filteredRequests} 
+          onDelete={handleDelete}
+          onEdit={handleEdit}
           onAccept={handleAccept} 
           />
         </div>

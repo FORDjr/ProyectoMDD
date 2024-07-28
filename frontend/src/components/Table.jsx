@@ -34,7 +34,7 @@ const Table = ({ columns, data, onDelete, onEdit, onAccept}) => {
                         src={updateIcon} 
                         alt="Editar" 
                         style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
-                        onClick={() => onEdit(row.Rut)}
+                        onClick={() => onEdit(row._id || row.Rut)}
                         />
                       }
                       {onDelete &&
@@ -42,7 +42,7 @@ const Table = ({ columns, data, onDelete, onEdit, onAccept}) => {
                         src={deleteIcon} 
                         alt="Eliminar" 
                         style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }} 
-                        onClick={() => onDelete(row.Rut)} 
+                        onClick={() => onDelete(row._id ||row.Rut)} 
                         />
                       }
                       {onAccept && 
