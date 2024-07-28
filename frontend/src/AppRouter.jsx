@@ -7,6 +7,10 @@ import Error404 from './pages/Error404';
 import EditUser from './pages/EditUser';
 import ProtectedRoute from './components/ProtectedRoute';
 import Users from './pages/Users';
+import Request from './pages/Request';
+import Implement from './pages/Implement';
+import React from 'react';
+import ImplementCard from './components/implementcard';
 
 const AppRouter = () => {
   return (
@@ -14,7 +18,6 @@ const AppRouter = () => {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       
-      {/* Rutas protegidas */}
       <Route 
         path="/home" 
         element={
@@ -47,7 +50,28 @@ const AppRouter = () => {
           </ProtectedRoute>
         } 
       />
+
+      <Route 
+        path="/request" 
+        element={
+          <ProtectedRoute>
+            <Request />
+          </ProtectedRoute>
+        }
+      />
       
+      <Route 
+        path="/implement" 
+        element={
+          <ProtectedRoute>
+            <Implement />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="/" element={<ImplementCard />} />
+      <Route path="/request" element={<Request />} />
+
       <Route path="*" element={<Error404 />} />
     </Routes>
   );

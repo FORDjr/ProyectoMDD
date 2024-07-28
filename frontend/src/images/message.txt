@@ -1,0 +1,219 @@
+import { useState, useEffect } from "react";
+import axios from '../services/root.service';
+import Navbar from "../components/Navbar";
+import { profile } from "../services/auth.service";
+import { useLocation } from 'react-router-dom';
+
+const Request = () => {
+  const [rut, setRut] = useState('');
+  const [implementId, setImplementId] = useState('');
+  const [quantity, setQuantity] = useState(1); 
+  const [message, setMessage] = useState('');
+  const location = useLocation();
+
+
+  //* ///////////////////////////////////////////////////////////////// vinculacion backend
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const peticion = await axios.post('/request', {
+        userRut: rut,
+        implementsRequested: [
+          {
+            implementId: implementId,
+            quantity: quantity, 
+          },
+        ],
+        message: message,
+      });
+      alert('Petición creada exitosamente');
+    } catch (error) {
+      alert('Error al crear la petición: ' + error.message);
+    }
+  };
+
+  const [userProfile, setUserProfile] = useState({
+    username: '',
+    email: '',
+    rut: '',
+    rolName: ''
+  });
+
+  useEffect(() => {
+    async function dataProfile(){  
+      try {
+        const { data } = await profile();
+        setUserProfile(data);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    }
+    dataProfile();
+  }, []);
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const id = query.get('implementId');
+    if (id) {
+      setImplementId(id);
+    }
+  }, [location]);
+  //* /////////////////////////////////////////////////////////////////
+  return (
+    
+      <div className="request-container">
+      <Navbar />
+      <h1>Formulario epico</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="rut">RUT:</label>
+        <input
+          type="text"
+          id="rut"
+          value={userProfile.rut}
+          onChange={(e) => setRut(e.target.value)}
+          required
+        />
+        <label htmlFor="implementId">ID del Implemento:</label>
+        <input
+          type="text"
+          id="implementId"
+          value={implementId}
+          onChange={(e) => setImplementId(e.target.value)}
+          required
+        />
+        <label htmlFor="quantity">Cantidad:</label>
+        <input
+          type="number"
+          id="quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          required
+          max="5"
+          min="1"
+        />
+        <label htmlFor="message">Mensaje:</label>
+        <textarea
+          id="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
+        <button type="submit">Solicitar</button>
+      </form>
+    </div>
+  );
+};
+
+export default Request;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import pelota from '../images/pelota.png';
+import basquet from '../images/basquet.png';
+import raqueta from '../images/raqueta.png';
+import peto from '../images/peto.png';
+
+
+const ImplementCard = ({ data }) => {
+  const [implement, setImplement] = useState([]);
+  const [showDetails, setShowDetails] = useState({});
+  const navigate = useNavigate();
+
+
+  const images = [pelota, peto, basquet, raqueta]; //importadas a 500x500
+
+  useEffect(() => {
+    if (data && data.data) {
+      setImplement(data.data);
+      const initialVisibility = data.data.reduce((acc, item) => {
+        acc[item._id] = false;
+        return acc;
+      }, {});
+      setShowDetails(initialVisibility);
+    }
+  }, [data]);
+  
+  const handleRequestClick = (id) => {
+    navigate(`/request?implementId=${id}`);
+  };
+  // Función para manejar la visibilidad
+  const toggleDetails = (id) => {
+    setShowDetails(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  return (
+    <div className="implement-card">
+        {implement.map((implement, index) => (
+          <div key={implement._id} className="box">
+              <div className="card">
+                    <div className="image">
+                    <img src={images[index % images.length]} alt={implement.name} />
+                    </div>
+                    <div className="description">
+                        <h1>{implement.name}</h1> 
+                        <h1>{`DISPONIBLE: ${implement.stock}`}</h1>
+                        <h1>{implement.category}</h1>
+
+
+                        <button onClick={() => handleRequestClick(implement._id)}>Pedir</button>
+
+                        <button onClick={() => toggleDetails(implement._id)}>Detalles</button>
+                        {showDetails[implement._id] && (
+                          <>
+                            <h2>{`ID: ${implement._id}`}</h2>
+                            <h2>{`DESCRIPCION: ${implement.description}`}</h2>
+                            <h2>{`ESTADO: ${implement.status}`}</h2>
+                            <h2>{`EN ESPERA: ${implement.stockWaiting}`}</h2>
+                          </>
+                        )}
+
+                    </div>
+              </div>
+          </div>
+        ))}
+    </div>
+  );
+};
+
+export default ImplementCard;
+
+
