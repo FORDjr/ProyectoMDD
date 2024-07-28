@@ -32,13 +32,13 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                       src={updateIcon} 
                       alt="Editar" 
                       style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
-                      onClick={() => onEdit(row.Rut)}
+                      onClick={() => onEdit(row._id || row.Rut)}
                       />
                       <img 
                         src={deleteIcon} 
                         alt="Eliminar" 
                         style={{ cursor: 'pointer', width: '24px', height: '24px' }} 
-                        onClick={() => onDelete(row.Rut)} 
+                        onClick={() => onDelete(row._id || row.Rut)}
                       />
                     </>
                   ) : (
