@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { createRequest, getRequest, getRequestAll, updateRequest, deleteRequest, acceptRequestController } from "../controllers/request.controller.js";
 import { authorizeRoles } from "../middlewares/auth.middleware.js";
-import { isManager } from "../middlewares/auth.middleware.js";
+import { getRequestByRut, getOwnRequests } from "../controllers/request.controller.js";
 
 const router = Router();
 
@@ -14,6 +14,12 @@ router.get("/req-all", getRequestAll); //api/request/req-all
 
 // Ruta para obtener peticion
 router.get("/get/:id", getRequest);
+
+// Ruta para obtener las peticiones del propio usuario
+router.get("/getOwn", getOwnRequests);
+
+// Ruta para obtener peticion por rut de usuario
+router.get("/getByRut", authorizeRoles("administrador", "encargado"), getRequestByRut);
 
 // Ruta para modificar peticion
 router.put("/modify/:id", authorizeRoles("administrador", "encargado"), updateRequest);
