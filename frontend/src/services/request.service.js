@@ -9,6 +9,16 @@ export async function getRequestAll() {
     }
 }
 
+export async function getOwnRequests() {
+    try {
+        const { data } = await axios.get('/request/getOwn');
+        return data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
+
 export async function acceptRequest(data) {
     try {
         const response = await axios.put(`/request/${data}/accept`);
@@ -37,3 +47,4 @@ export async function deleteRequest(id) {
     }
 
 }
+

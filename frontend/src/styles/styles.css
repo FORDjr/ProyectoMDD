@@ -202,8 +202,8 @@ body {
 .profile_page{
 	background-color: #eef7ff;
 	display: block;
-	height: 90vh;
-	padding: 9vh 0 0 5vh;
+	
+	padding: 9vh 9vh 9vh 18vh;
 	.sections{
 		display: flex;
 		height: 100%;
@@ -211,7 +211,7 @@ body {
 		justify-content: center;
 		align-items: center;
 		.profile_image{
-		height: 50vh;
+		height: 40vh;
 		width: auto;
 		}
 	}
@@ -220,6 +220,11 @@ body {
 	}
 }
 
+.profile_table{
+	background-color: #eef7ff;
+	display: block;
+	margin-left: 19vh;
+}
 .error_404{
 	height: 100vh;
 	width: 100%;
