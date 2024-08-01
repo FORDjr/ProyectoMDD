@@ -112,7 +112,7 @@ export async function getRequestAll(req, res) {
 export async function getOwnRequests (req, res) {
   try {
     const rutUser = req.session.user.rut;
-    const requests = await Request.find({userRut:rutUser});
+    const requests = await Request.find({userRut:rutUser}).populate('implementsRequested.implementId', 'name');
     res.status(200).json({
       message: "Lista de formularios",
       data : requests
