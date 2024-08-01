@@ -4,16 +4,22 @@ import User from "../models/user.model.js";
 
 const checkRequestExpiration = async () => {
   const requests = await Request.find({ status: 'Pendiente' });
-  requests.map(async (request) => {
+  requests.forEach(async (request) => {
     const currentTime = new Date();
     if (request.expiresAt && request.expiresAt < currentTime) {
+      try {
         const implement = await Implement.findById(request.implementsRequested[0].implementId);
         if (implement) {
           implement.stockWaiting -= request.implementsRequested[0].quantity;
           implement.stock += request.implementsRequested[0].quantity;
+          await implement.save(); 
         }
         request.status = 'Expirado';
-        return;
+        await request.save();
+        console.log(`Peticion ${request._id} expirada`);
+      } catch (error) {
+        console.error(`Error en el proceso de expiración de la solicitud ${request._id}, error`);
+      }
     }
   });
 };
