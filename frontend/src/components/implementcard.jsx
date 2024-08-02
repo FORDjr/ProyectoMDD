@@ -83,7 +83,7 @@ const ImplementCard = ({ data }) => {
               <h1>{implement.category}</h1>
               <button onClick={() => handleRequestClick(implement._id)}>Pedir</button>
               <button onClick={() => toggleDetails(implement._id)}>Detalles</button>
-              <button onClick={() => handleEdit(implement._id)}>Editar</button>
+              {((userRole==='administrador')||(userRole==='encargado'))&&(<button onClick={() => handleEdit(implement._id)}>Editar</button>)}
               {(userRole==='administrador')&&(<button onClick={() => handleDelete(implement._id)}>Eliminar</button>)}
               {showDetails[implement._id] && (
                 <>
