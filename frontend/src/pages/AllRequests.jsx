@@ -38,18 +38,24 @@ const AllRequests = () => {
 
   const handleAccept = async (data) => {
     const request = requests.find(r => r._id === data);
-    if(request.Estado === 'Expirado'){
+    if(request.Estado === 'Pendiente'){
+      try {
+        await acceptRequest(data);
+        Swal.fire('Aceptado!', 'La solicitud ha sido aceptada.', 'success');
+        dataRequest(); // Actualiza la tabla
+      } catch (error) {
+        console.error("Error: ", error);
+      }
       Swal.fire('Error', 'La solicitud ha expirado', 'error');
       return;
+    }else{
+      if(request.Estado === 'Aceptado'){
+      Swal.fire('Error', 'La solicitud ya ha sido aceptada', 'error');
+      }else if (request.Estado === 'Expirado'){
+        Swal.fire('Error', 'La solicitud ya ha expirado', 'error');
+      }
     }
-    try {
-      await acceptRequest(data);
-      dataRequest(); // Actualiza la tabla
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  }
-  
+  };
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
