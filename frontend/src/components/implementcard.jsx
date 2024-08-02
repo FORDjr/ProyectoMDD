@@ -5,6 +5,7 @@ import basquet from '../images/basquet.png';
 import raqueta from '../images/raqueta.png';
 import peto from '../images/peto.png';
 import { deleteImplement } from '../services/implements.service';
+import { editImplement } from '../services/implements.service';
 
 const ImplementCard = ({ data }) => {
   const [implement, setImplement] = useState([]);
@@ -46,6 +47,11 @@ const ImplementCard = ({ data }) => {
     }
   };
 
+
+  const handleEdit = (id) => {
+    navigate(`/implement-edit?implementId=${id}`);
+  }
+
   return (
     <div className="implement-card">
       {implement.map((implement, index) => (
@@ -60,6 +66,7 @@ const ImplementCard = ({ data }) => {
               <h1>{implement.category}</h1>
               <button onClick={() => handleRequestClick(implement._id)}>Pedir</button>
               <button onClick={() => toggleDetails(implement._id)}>Detalles</button>
+              <button onClick={() => handleEdit(implement._id)}>Editar</button>
               {(userRole==='administrador')&&(<button onClick={() => handleDelete(implement._id)}>Eliminar</button>)}
               {showDetails[implement._id] && (
                 <>

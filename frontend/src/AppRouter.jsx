@@ -105,7 +105,7 @@ const AppRouter = () => {
         />
 
         <Route
-        path="/implement-edit/"
+        path="/implement-edit"
         element={
           <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
             <EditImplement />
