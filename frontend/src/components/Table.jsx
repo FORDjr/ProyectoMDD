@@ -1,8 +1,9 @@
 import deleteIcon from '../assets/deleteIcon.svg';
 import updateIcon from '../assets/updateIcon.svg';
 import acceptIcon from '../assets/acceptIcon.svg';
+import expireIcon from '../assets/expireIcon.svg';
 
-const Table = ({ columns, data, onDelete, onEdit, onAccept}) => {
+const Table = ({ columns, data, onDelete, onEdit, onAccept, onExpire}) => {
   const totalRows = 7;
   const numEmptyRows = totalRows - (data.length > 0 ? data.length : 1);
 
@@ -52,6 +53,14 @@ const Table = ({ columns, data, onDelete, onEdit, onAccept}) => {
                           style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }} 
                           onClick={() => onAccept(row._id)} 
                         /> 
+                      }
+                      {onExpire &&
+                        <img
+                          src={expireIcon}
+                          alt="Expirar"
+                          style={{ marginRight: '10px', cursor: 'pointer', width: '24px', height: '24px' }}
+                          onClick={() => onExpire(row._id)}
+                        />
                       }
                     </>
                   ) : (
