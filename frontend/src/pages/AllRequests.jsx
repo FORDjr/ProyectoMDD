@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Navbar from '../components/Navbar';
 import Table from '../components/Table';
 import { getRequestAll, deleteRequest, acceptRequest } from '../services/request.service';
@@ -44,18 +45,31 @@ const AllRequests = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    try{
-      await deleteRequest(id);
-      dataRequest();
-    }catch(error){
-      console.error("Error: ", error);
-    }
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡No podrás revertir esto!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo!',
+      cancelButtonText: 'Cancelar',
+    });
+    if (result.isConfirmed) {
+      try {
+        await deleteRequest(id);
+        dataRequest();
+        Swal.fire('Eliminado!', 'La solicitud ha sido eliminada.', 'success');
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+  }
   };
 
   const handleEdit = async (id) => {
     const request = requests.find(r => r._id === id);
     navigate(`/edit-request/${id}`, { state: { request } });
-  }
+  };
 
   const filteredRequests = requests;
 
