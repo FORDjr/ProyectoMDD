@@ -42,7 +42,7 @@ const Navbar = () => {
                 )}
 
                 {(userRole === 'administrador' || userRole === 'encargado') && (
-                    <li className={location.pathname === "/edit" ? "active" : ""}>
+                    <li className={location.pathname === "/implement-edit" ? "active" : ""}>
                         <NavLink to="/implement-edit">Editar Implementos</NavLink>
                     </li>
                 )}

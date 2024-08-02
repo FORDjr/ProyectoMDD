@@ -1,3 +1,5 @@
+import React from "react";
+
 const Form = ({ title, fields, buttonText, onSubmit, footerContent, backgroundColor }) => {
 
     const handleSubmit = (event) => {
@@ -22,6 +24,7 @@ const Form = ({ title, fields, buttonText, onSubmit, footerContent, backgroundCo
                         placeholder={field.placeholder}
                         type={field.type || "text"}
                         value={field.value}
+                        onChange={field.onChange}
                         required={field.required}
                         disabled={field.disabled}
                     />
