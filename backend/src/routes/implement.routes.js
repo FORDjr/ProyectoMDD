@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createImplement, getImplementByname, getImplements, deleteImplement, updateImplement } from "../controllers/implement.controller.js";
-import { isAdmin, isManager, authorizeRoles } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
