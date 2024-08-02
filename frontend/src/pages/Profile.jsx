@@ -2,15 +2,39 @@ import Form from "../components/Form";
 import Navbar from "../components/Navbar";
 import { profile } from "../services/auth.service";
 import { useState, useEffect } from "react";
+import Table from '../components/Table';
+import { getOwnRequests } from "../services/request.service";
 
 const Profile = () => {
+  const [requests, setRequest] = useState([]);
   const [userProfile, setUserProfile] = useState({
     username: '',
     email: '',
     rut: '',
     rolName: ''
   });
+  const columns = ['Implemento', 'Cantidad', 'Estado', 'Mensaje'];
+  
+  const dataRequest = async () => {
+    try {
+      const response = await getOwnRequests();
+      
+      const formattedData = response.data.map(request => ({
+        Implemento: request.implementsRequested[0].implementId.name,
+        Cantidad: request.implementsRequested[0].quantity,
+        Estado: request.status,
+        Mensaje: request.message,
+      }));
+      console.log(response);
 
+
+      setRequest(formattedData);
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
+  
   useEffect(() => {
     async function dataProfile(){  
       try {
@@ -21,8 +45,11 @@ const Profile = () => {
       }
     }
     dataProfile();
+    dataRequest();
   }, []);
-
+  
+  const filteredRequests = requests;
+  
   return (
     <main className="profile_page">
       <Navbar />
@@ -63,9 +90,28 @@ const Profile = () => {
             },
           ]}
         />
+        
         </div>
+        
+
       </div>
+      <main className="profile_table">
+        <h1 style={
+         
+         {color:'#003366',marginLeft: '53vh' }
+          
+          }>
+          Historial
+        </h1>
+      <Table columns={columns} 
+          data={filteredRequests} 
+          />
+
+      </main>
+      
+
     </main>
+    
   );
 };
 

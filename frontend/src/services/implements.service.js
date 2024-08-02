@@ -27,4 +27,13 @@ export async function editImplement(data, id) {
     }
 }
 
+export async function deleteImplement(id) {
+    try {
+        const response = await axios.delete(`/implement/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export default getImplements;
