@@ -48,3 +48,14 @@ export async function deleteRequest(id) {
 
 }
 
+export async function expireRequest(id, status){
+    try {
+        console.log("status: ", status);
+        const { data } = await axios.put(`/request/modify/${id}`, status);
+        
+        return data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
