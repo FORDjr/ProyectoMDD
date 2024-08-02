@@ -2,7 +2,7 @@ import Form from '../components/Form';
 import Navbar from '../components/Navbar';
 import { editImplement } from '../services/implements.service';
 import { useLocation } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const EditImplement = () => {
     const [implementId, setImplementId] = useState('');

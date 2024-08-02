@@ -10,7 +10,6 @@ import Users from './pages/Users';
 import Request from './pages/Request';
 import AllRequests from './pages/AllRequests';
 import Implement from './pages/Implement';
-import React from 'react';
 import ImplementCard from './components/implementcard';
 import EditRequest from './pages/EditRequest';
 import CreateImplement from './pages/CreateImplement';
@@ -73,7 +72,7 @@ const AppRouter = () => {
         }
       />
       <Route 
-        path="/edit-request/:id" 
+        path="/req-all/edit/:id" 
         element={
           <ProtectedRoute>
             <EditRequest />
@@ -89,14 +88,12 @@ const AppRouter = () => {
           </ProtectedRoute>
         }
       />
-      
-      
 
       <Route path="/" element={<ImplementCard />} />
       <Route path="/request" element={<Request />} />
 
       <Route
-        path="/implement-create"
+        path="/implement/create"
         element={
           <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
             <CreateImplement />
@@ -105,7 +102,7 @@ const AppRouter = () => {
         />
 
         <Route
-        path="/implement-edit"
+        path="/implement/edit"
         element={
           <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
             <EditImplement />

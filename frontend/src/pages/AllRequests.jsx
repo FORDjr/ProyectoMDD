@@ -68,7 +68,7 @@ const AllRequests = () => {
 
   const handleEdit = async (id) => {
     const request = requests.find(r => r._id === id);
-    navigate(`/edit-request/${id}`, { state: { request } });
+    navigate(`/req-all/edit/${id}`, { state: { request } });
   };
 
   const filteredRequests = requests;

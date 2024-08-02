@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Form from '../components/Form';
 import Navbar from '../components/Navbar';
 import { createImplement } from '../services/implements.service';
@@ -5,11 +7,17 @@ import { createImplement } from '../services/implements.service';
 
 const CreateImplement = () => {
 
+    const navigate = useNavigate();
+
     const envioRegistro = async (data) => {
         console.log(data);
         try {
             createImplement(data);
-            alert('Implemento creado exitosamente');
+            Swal.fire({
+                title: 'Implemento creado exitosamente!',
+                icon: 'success',
+              });
+            navigate('/implement');
         } catch (error) {
             alert('Error al crear el implemento: ' + error.message);
         }

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import pelota from '../images/pelota.png';
 import basquet from '../images/basquet.png';
 import raqueta from '../images/raqueta.png';
 import peto from '../images/peto.png';
 import { deleteImplement } from '../services/implements.service';
-import { editImplement } from '../services/implements.service';
 
 const ImplementCard = ({ data }) => {
   const [implement, setImplement] = useState([]);
@@ -38,18 +38,35 @@ const ImplementCard = ({ data }) => {
 
   // Función para manejar la eliminación
   const handleDelete = async (id) => {
-    try {
-      await deleteImplement(id);
-      window.location.replace('');
-      console.log("Implemento eliminado correctamente");
-    } catch (error) {
-      console.error("Error al eliminar el implemento:", error);
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡No podrás revertir esto!',
+      icon: 'warning',       
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo!',
+      cancelButtonText: 'Cancelar',
+    });
+    if(result.isConfirmed){
+      try{
+        await deleteImplement(id);
+        const confirmation = await Swal.fire({
+          title: 'Implemento eliminado exitosamente!',
+          icon: 'success',
+        });
+        if(confirmation.isConfirmed){
+          window.location.replace('');
+        }
+      }catch (error) {
+        console.error("Error al eliminar el implemento:", error);
+      }
     }
   };
 
 
   const handleEdit = (id) => {
-    navigate(`/implement-edit?implementId=${id}`);
+    navigate(`/implement/edit?implementId=${id}`);
   }
 
   return (

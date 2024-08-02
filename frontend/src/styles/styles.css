@@ -484,28 +484,8 @@ body {
 	color: #003366;
 	transition: .3s ease-out;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
+
   body, html {
 	margin: 0;
 	padding: 0;
@@ -517,7 +497,7 @@ body {
 	grid-template-columns: repeat(3, 1fr);
 	gap: 40px;
 	align-items: center;
-	padding: 100px 20px;
+	padding: 13vh 20px;
 	width: 100%; 
 	max-width: 100%; 
 	overflow: hidden;
@@ -623,7 +603,12 @@ body {
 	color: #003366;
 	transition: .3s ease-out;
 }
-
+.implement-buttons{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin:13vh 2vh -10vh 5vh
+}
 
 .create-container{
 	display: flex;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from '../services/root.service';
 import Navbar from "../components/Navbar";
+import Swal from 'sweetalert2';
 import { profile } from "../services/auth.service";
 import { useLocation } from 'react-router-dom';
 
@@ -14,6 +15,10 @@ const Request = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      Swal.fire({
+        title: 'Petición creada exitosamente!',
+        icon: 'success',
+      });
       await axios.post('/request', {
         userRut: rut,
         implementsRequested: [
@@ -24,7 +29,6 @@ const Request = () => {
         ],
         message: message,
       });
-      alert('Petición creada exitosamente');
     } catch (error) {
       alert('Error al crear la petición: ' + error.message);
     }
