@@ -26,14 +26,6 @@ const Navbar = () => {
                         alt="Logo metodología de desarrollo"
                     />
                 </li>
-                <li className={location.pathname === "/inicio" ? "active" : ""}>
-                    <NavLink to="/home">Inicio</NavLink>
-                </li>
-                {userRole === 'administrador' && (
-                    <li className={location.pathname === "/usuarios" ? "active" : ""}>
-                        <NavLink to="/users">Usuarios</NavLink>
-                    </li>
-                )}
 
                 <li className={location.pathname === "/implement" ? "active" : ""}>
                     <NavLink to="/implement">Implementos</NavLink>
@@ -47,7 +39,13 @@ const Navbar = () => {
                     <NavLink to="/req-all">Todas las peticiones</NavLink>
                     </li>
                 )}
-
+                
+                {userRole === 'administrador' && (
+                    <li className={location.pathname === "/usuarios" ? "active" : ""}>
+                        <NavLink to="/users">Usuarios</NavLink>
+                    </li>
+                )}
+            
                 <li className={location.pathname === "/perfil" ? "active" : ""}>
                     <NavLink to="/profile">Perfil</NavLink>
                 </li>

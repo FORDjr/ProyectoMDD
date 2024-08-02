@@ -8,7 +8,7 @@ const Login = () => {
 
     const loginSubmit = (data) => {
         login(data).then(() => {
-            navigate('/home')
+            navigate('/implement');
         })
     }
 
