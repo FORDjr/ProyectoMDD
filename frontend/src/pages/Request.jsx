@@ -62,7 +62,7 @@ const Request = () => {
     <div className="request-container">
       <Navbar />
       <h1>Formulario épico</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}> 
         <label htmlFor="rut">RUT:</label>
         <input
           type="text"

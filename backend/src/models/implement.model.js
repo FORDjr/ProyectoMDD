@@ -16,15 +16,15 @@ const implementSchema = new mongoose.Schema({
     },
     stockWaiting: {//cantidad de implementos esperando (10 minutos)
         type: Number,
-        required: true // 3
+        required: false // 3
     },
     stockAccepted: {//cantidad de implementos entregados
         type: Number,
-        required: true // 2
+        required: false // 2
     },
     status: {//estado del implemento
         type: String,
-        required: true,
+        required: false,
         enum: ['disponible', 'no disponible']
     },
     category: {//categoria del implemento por ejemplo: futbol, basquetbol, tenis

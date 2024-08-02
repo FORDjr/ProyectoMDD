@@ -618,3 +618,122 @@ body {
 	color: #003366;
 	transition: .3s ease-out;
 }
+
+
+.create-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10rem;
+	background-color: #f7f7f7;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  .create-container form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 500px;
+  }
+  
+  .create-container label {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: #003366;
+	align-self: flex-start;
+  }
+  
+  .create-container input,
+  .create-container textarea {
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	border: 2px solid #003366;
+	border-radius: 0.5rem;
+	width: 100%;
+	font-size: 1rem;
+  }
+  
+  .create-container textarea.message-textarea {
+	height: 100px; 
+	resize: vertical;
+  }
+  
+  .create-container button {
+	padding: auto;
+	display: flex;
+	justify-content: center;
+	padding: 1.2vh 0;
+	border-radius: 12px;
+	border: none;
+	width: 100%;
+	background-color: #003366;
+	color: #eef7ff;
+	font-weight: bold;
+	font-size: 16px;
+	border: 3px solid #003366;
+	margin-top: 10px;
+  }
+
+.edit-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10rem;
+	background-color: #f7f7f7;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-container h1 {
+	color: #003366;
+	margin-bottom: 1rem;
+  }
+  
+  .edit-container form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 500px;
+  }
+  
+  .edit-container label {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: #003366;
+	align-self: flex-start;
+  }
+  
+  .edit-container input,
+  .edit-container textarea {
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	border: 2px solid #003366;
+	border-radius: 0.5rem;
+	width: 100%;
+	font-size: 1rem;
+  }
+  
+  .edit-container textarea.message-textarea {
+	height: 100px; 
+	resize: vertical;
+  }
+  
+  .edit-container button {
+	padding: auto;
+	display: flex;
+	justify-content: center;
+	padding: 1.2vh 0;
+	border-radius: 12px;
+	border: none;
+	width: 100%;
+	background-color: #003366;
+	color: #eef7ff;
+	font-weight: bold;
+	font-size: 16px;
+	border: 3px solid #003366;
+	margin-top: 10px;
+  }
