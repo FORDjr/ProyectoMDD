@@ -13,6 +13,8 @@ import Implement from './pages/Implement';
 import React from 'react';
 import ImplementCard from './components/implementcard';
 import EditRequest from './pages/EditRequest';
+import CreateImplement from './pages/CreateImplement';
+import EditImplement from './pages/EditImplement';
 
 const AppRouter = () => {
   return (
@@ -87,9 +89,29 @@ const AppRouter = () => {
           </ProtectedRoute>
         }
       />
+      
+      
 
       <Route path="/" element={<ImplementCard />} />
       <Route path="/request" element={<Request />} />
+
+      <Route
+        path="/implement-create"
+        element={
+          <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
+            <CreateImplement />
+          </ProtectedRoute>
+        }
+        />
+
+        <Route
+        path="/implement-edit/"
+        element={
+          <ProtectedRoute allowedRoles={['administrador', 'encargado']}>
+            <EditImplement />
+          </ProtectedRoute>
+        }
+        />
 
       <Route path="*" element={<Error404 />} />
     </Routes>

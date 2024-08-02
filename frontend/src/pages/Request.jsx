@@ -63,6 +63,7 @@ const Request = () => {
       <Navbar />
       <h1>Formulario</h1>
       <form onSubmit={handleSubmit}>
+
         <label htmlFor="rut">RUT:</label>
         <input
           type="text"
